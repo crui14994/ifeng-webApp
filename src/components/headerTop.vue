@@ -24,8 +24,8 @@ export default {
 <style scoped lang="scss">
 #header{
   .mint-header{
-    background-color: #D43D3D;
-    font-size: 16px;
+    background-color: #F54343;
+    font-size: 18px;
   }
   .iconfont {
     font-size: 24px;

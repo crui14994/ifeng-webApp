@@ -17,17 +17,17 @@ export default new Router({
           component: () => import('@/pages/home')
         },
         {
-          path: '/project',
+          path: 'project',
           name: 'project',
           component: () => import('@/pages/project')
         },
         {
-          path: '/star',
+          path: 'star',
           name: 'star',
           component: () => import('@/pages/star')
         },
         {
-          path: '/userinfo',
+          path: 'userinfo',
           name: 'userinfo',
           component: () => import('@/pages/userinfo')
         }

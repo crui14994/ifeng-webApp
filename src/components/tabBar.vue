@@ -40,6 +40,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #tabBar {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
   .mint-tabbar {
     background-color: #fff;
     background-image: none;
@@ -55,7 +59,7 @@ export default {
       text-decoration: none;
     }
     .is-selected {
-      color: #d43d3d;
+      color:#F54343;
       background-color: #fff;
     }
   }

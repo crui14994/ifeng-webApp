@@ -1,0 +1,18 @@
+//修改home页swiper样式
+.swiper {
+  .mint-swipe-indicators {
+    left: 78%;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  .mint-swipe-indicator {
+    background: #fff;
+    opacity: 0.8;
+    width: .16rem;
+    height: .16rem;
+  }
+
+  .is-active {
+    background: #F54343;
+  }
+}

@@ -1,0 +1,16 @@
+.swiper .mint-swipe-indicators {
+  left: 78%;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.swiper .mint-swipe-indicator {
+  background: #fff;
+  opacity: 0.8;
+  width: .16rem;
+  height: .16rem;
+}
+
+.swiper .is-active {
+  background: #F54343;
+}
