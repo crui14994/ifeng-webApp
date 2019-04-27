@@ -25,7 +25,7 @@ export default {
 #header{
   .mint-header{
     background-color: #F54343;
-    font-size: 18px;
+    font-size: 21px;
   }
   .iconfont {
     font-size: 24px;

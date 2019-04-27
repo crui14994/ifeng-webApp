@@ -8,40 +8,40 @@
             </li>
         </ul>
       </div>
-      <mt-loadmore  :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-        <div class="swiper" v-show="navActive=='__all__'">
-                <mt-swipe :auto="4000">
-                    <mt-swipe-item class="swiper-item" v-for="(item,index) in swiperList" :key="index">
-                        <img :src="item.image" width="100%" alt="">
-                        <div class="swiper-title">
-                            {{item.title}}
-                        </div>
-                    </mt-swipe-item>
-                </mt-swipe>
+       <div class="swiper" v-show="navActive=='__all__'">
+            <mt-swipe :auto="4000">
+                <mt-swipe-item class="swiper-item" v-for="(item,index) in swiperList" :key="index">
+                    <img :src="item.image" width="100%" alt="">
+                    <div class="swiper-title">
+                        {{item.title}}
+                    </div>
+                </mt-swipe-item>
+            </mt-swipe>
         </div>
+      <mt-loadmore  :top-method="loadTop" ref="loadmore">
         <div class="news-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-                <ul class="news-ul01">
-                    <li class="news-ul01-li" v-for="(item,index) in newsList" :key="index">
-                        <router-link to="/" >
-                            <p class="news-title">{{item.title}}</p>
-                            <div> 
-                                <ul class="news-img">
-                                    <li v-for="(img,index) in item.image_list" :key="index">
-                                            <img alt="加载出错"  :src="img.url">
-                                    </li>
-                                </ul>
-                                    <div class="bottomInfo clearfix">
-                                        <!-- <Icon type="fireball" size="10" color="#d43d3d" v-show="item.hot===1"></Icon> -->
-                                        <!-- <span class="avIcon" v-show="item.label==='广告'">广告</span> -->
-                                        <span class="writer">{{item.media_name}}</span> 
-                                        <span class="comment_count">评论&nbsp;{{item.comment_count}}</span>
-                                        <span class="datetime">{{item.datetime}}</span>
-                                    </div>
+            <ul class="news-ul01">
+                <li class="news-ul01-li" v-for="(item,index) in newsList" :key="index">
+                    <router-link to="/" >
+                        <p class="news-title">{{item.title}}</p>
+                        <div> 
+                            <ul class="news-img">
+                                <li v-for="(img,index) in item.image_list" :key="index">
+                                        <img alt="加载出错"  :src="img.url">
+                                </li>
+                            </ul>
+                                <div class="bottomInfo clearfix">
+                                    <!-- <Icon type="fireball" size="10" color="#d43d3d" v-show="item.hot===1"></Icon> -->
+                                    <!-- <span class="avIcon" v-show="item.label==='广告'">广告</span> -->
+                                    <span class="writer">{{item.media_name}}</span> 
+                                    <span class="comment_count">评论&nbsp;{{item.comment_count}}</span>
+                                    <span class="datetime">{{item.datetime}}</span>
                                 </div>
-                        </router-link>
-                    </li>
-                </ul>
-                <div  class="loading">正在加载...</div>
+                            </div>
+                    </router-link>
+                </li>
+            </ul>
+            <div v-show="newsList.length!=0" class="loading">正在加载...</div>
         </div>
         
       </mt-loadmore>
@@ -106,8 +106,7 @@ export default {
       swiperList: [], //轮播
       swiperShow: true, //轮播是否显示
       newsList: [], //新闻列表
-      allLoaded: false,
-      busy: false
+      busy: true
     };
   },
   created() {
@@ -120,9 +119,7 @@ export default {
     //获取新闻列表
     this.getNewsList(this.navActive);
   },
-  mounted() {
-    //   this.busy = true;
-  },
+  mounted() {},
   components: {
     headerTop
   },
@@ -132,6 +129,14 @@ export default {
       let formType = to.query.type;
       this.navActive = formType;
       this.getNewsList(formType);
+    },
+    //只有当新闻列表超过4条时菜开启滚动加载
+    newsList(val){
+        if(val.length>4){
+            this.busy = false;
+        }else{
+            this.busy = true;
+        }
     }
   },
   methods: {
@@ -148,21 +153,17 @@ export default {
       this.getNewsList(this.navActive);
       this.$refs.loadmore.onTopLoaded();
     },
-    loadBottom() {
-      //   ...// 加载更多数据
-      console.log(123);
-      //   this.allLoaded = true; // 若数据已全部获取完毕
-      this.$refs.loadmore.onBottomLoaded();
-    },
+    // 加载更多
     loadMore() {
       this.busy = true;
-      setTimeout(() => {
-        for (var i = 0, j = 10; i < j; i++) {
-          // this.list.push({ name: count++ });
-        }
-        this.busy = false;
-      }, 1000);
-      console.log(123);
+      var _this = this;
+      newsApi.getNewsList(this.navActive).then(res => {
+        let data = res.data.data;
+        data.forEach(function(item) {
+          _this.newsList.push(item);
+        });
+        _this.busy = false;
+      });
     }
   }
 };
@@ -171,15 +172,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .container {
-  padding-top: 40px;
+  padding-top: 1.066667rem;
   .nav-bar {
-    height: 0.933333rem;
+    height:  1.066667rem;
     > ul {
       width: 100%;
       overflow: hidden;
       overflow-x: auto;
       text-align: center;
-      height: 0.933333rem;
+      height:  1.066667rem;
       background: #f4f5f6;
       white-space: nowrap;
       position: fixed;
@@ -188,8 +189,8 @@ export default {
       li {
         width: 1.4rem;
         display: inline-block;
-        line-height: 0.933333rem;
-        font-size: 16px;
+        line-height: 1.066667rem;
+        font-size: 18px;
         .nav-active {
           color: #f54343;
           font-weight: bold;
@@ -218,12 +219,13 @@ export default {
   }
   .news-list {
     padding-bottom: 1.333333rem;
-    .loading{
-        text-align: center;
-        height: 1.066667rem;
-        line-height: .533333rem;
-        font-size: 14px;
-        color: #9a9a9a;
+    min-height: 100%;
+    .loading {
+      text-align: center;
+      height: 1.066667rem;
+      line-height: 0.533333rem;
+      font-size: 14px;
+      color: #9a9a9a;
     }
     .news-ul01 {
       .news-ul01-li {
